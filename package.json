@@ -1,0 +1,11 @@
+{
+  "name": "vi-marvel",
+  "author": {
+    "name": "Rafael Tapia", 
+    "email": "rafaelsilvatapia@gmail.com"
+  },
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "license": "MIT"
+}
