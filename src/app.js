@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
-import PersonController from './controller/person-controller.js';
-
+import routes from './routes.js';
 class App {
   constructor() {
     this.server = express();
@@ -14,12 +13,7 @@ class App {
   }
   
   routes() {
-    this.server.get('/', (request, response) => {
-      return response.json({ ok: true });
-    });
-    
-    this.server.get('/people', (req, res) => PersonController.getAllPeople(req, res));
-    this.server.get('/people/characters', (req, res) => PersonController.getPeopleCharacters(req, res));
+    this.server.use(routes)
   }
 }
 
