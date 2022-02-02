@@ -13,6 +13,7 @@ app.get('/', (request, response) => {
 });
 
 app.get('/people', (req, res) => PersonController.getAllPeople(req, res));
+app.get('/people/characters', (req, res) => PersonController.getPeopleCharacters(req, res));
 app.get('/movies/:id', (req, res) => MovieController.getMovieById(req, res));
 
 app.listen(PORT, console.log(`server listening on ${PORT}`));

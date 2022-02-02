@@ -79,6 +79,36 @@ class PersonController {
       return response.status(500).json({ok: false, message: 'Error trying to return all people'})
     }
   }
+
+  async getPeopleCharacters(request, response) {
+    const peopleMovies = {};
+    people.map(person => {
+      peopleMovies[person] = new Set();
+    });
+    try {
+      const promises = Object.entries(movies).map(async obj => {
+        const [movieName, movieId] = obj;
+        const { data } = await api.get(`/movie/${movieId}/credits`);
+        data.cast.forEach(person => {
+          if (!people.includes(person.name)) return;
+          peopleMovies[person.name].add(person.character.replace(' (uncredited)', ''));
+        })
+      })
+
+      await Promise.all(promises)
+
+      return response.json(Object.entries(peopleMovies).map(person => {
+        const [name, charactersSet] = person;
+        return {
+          name,
+          characters: Array.from(charactersSet)
+        }
+      }).filter(person => person.characters.length >= 2))
+    } catch (error) {
+      console.log(error);
+      return response.status(500).json({ok: false, message: 'Error trying to return all people'})
+    }
+  }
 }
 
 export default new PersonController();
