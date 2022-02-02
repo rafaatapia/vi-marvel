@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import express from 'express';
-import MovieController from './controller/movie-controller.js';
 import PersonController from './controller/person-controller.js';
 
 const app = express();
@@ -14,6 +13,5 @@ app.get('/', (request, response) => {
 
 app.get('/people', (req, res) => PersonController.getAllPeople(req, res));
 app.get('/people/characters', (req, res) => PersonController.getPeopleCharacters(req, res));
-app.get('/movies/:id', (req, res) => MovieController.getMovieById(req, res));
 
 app.listen(PORT, console.log(`server listening on ${PORT}`));
