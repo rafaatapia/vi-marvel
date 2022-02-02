@@ -5,9 +5,15 @@ import PersonController from './controller/person-controller.js';
 class App {
   constructor() {
     this.server = express();
-
+    this.middlewares();
+    this.routes();
+  }
+  
+  middlewares() {
     this.server.use(express.json());
-
+  }
+  
+  routes() {
     this.server.get('/', (request, response) => {
       return response.json({ ok: true });
     });
