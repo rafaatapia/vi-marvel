@@ -45,3 +45,10 @@ $ docker build -t vi-marvel .
 # or
 $ docker run -p 3000:3000 vi-marvel
 ```
+
+## Todo
+
+- Implement tests
+- Endpoint to get movies details
+- Endpoint to get person details
+- Implement filters on /people endpoints
