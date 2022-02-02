@@ -65,15 +65,23 @@ class PersonController {
       const promises = Object.entries(movies).map(async obj => {
         const [movieName, movieId] = obj;
         const { data } = await api.get(`/movie/${movieId}/credits`);
+
         data.cast.forEach(person => {
           if (!people.includes(person.name)) return;
-          peopleMovies[person.name].push({movie: movieName, character: person.character});
+          peopleMovies[person.name].push(movieName);
         })
       })
 
       await Promise.all(promises)
 
-      return response.json(peopleMovies)
+      const peopleResponse = Object.entries(peopleMovies).map(([key, value]) => {
+        return {
+          name: key,
+          movies: value
+        }
+      });
+
+      return response.json(peopleResponse)
     } catch (error) {
       console.log(error);
       return response.status(500).json({ok: false, message: 'Error trying to return all people'})
@@ -91,19 +99,27 @@ class PersonController {
         const { data } = await api.get(`/movie/${movieId}/credits`);
         data.cast.forEach(person => {
           if (!people.includes(person.name)) return;
-          peopleMovies[person.name].add(person.character.replace(' (uncredited)', ''));
+          peopleMovies[person.name].add(
+            person.character
+              .replace(' (uncredited)', '')
+              .replace(' (archive footage / uncredited)', '')
+          );
         })
       })
 
       await Promise.all(promises)
 
-      return response.json(Object.entries(peopleMovies).map(person => {
+      const peopleResponse = Object.entries(peopleMovies).map(person => {
         const [name, charactersSet] = person;
+        const characters = Array.from(charactersSet);
+        
         return {
           name,
-          characters: Array.from(charactersSet)
+          characters
         }
-      }).filter(person => person.characters.length >= 2))
+      }).filter(person => person.characters.length >= 2)
+
+      return response.json(peopleResponse)
     } catch (error) {
       console.log(error);
       return response.status(500).json({ok: false, message: 'Error trying to return all people'})
